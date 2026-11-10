@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人簡介與作品集 | Lab 2</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: "Microsoft JhengHei", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        h1 { color: #58a6ff; margin-bottom: 10px; }
+        button {
+            padding: 10px 15px;
+            margin-top: 15px;
+            background-color: #238636;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #2ea043; }
+        #api-result { 
+            margin-top: 20px; 
+            color: #7ee787; 
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>個人 GitHub Page 主頁</h1>
+        <p>這是一個包含 HTML、CSS、jQuery 與 Ajax 的測試頁面。</p>
+        <button id="ajax-btn">載入 GitHub API 資料 (Ajax)</button>
+        <div id="api-result"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $("#ajax-btn").click(function() {
+                $("#api-result").html("正在請求資料...");
+                $.ajax({
+                    url: "https://api.github.com/users/WUJHENGTING",
+                    type: "GET",
+                    dataType: "json",
+                    success: function(data) {
+                        $("#api-result").html(
+                            "帳號名稱：" + data.login + "<br>" +
+                            "公開專案數：" + data.public_repos + " 個<br>" +
+                            "建立時間：" + data.created_at.substring(0, 10)
+                        );
+                    },
+                    error: function() {
+                        $("#api-result").html("<span style='color:red;'>載入失敗</span>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
